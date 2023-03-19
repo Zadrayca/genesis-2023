@@ -1,17 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import {setupStore} from "./redux";
+import {Provider} from "react-redux";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {ThemeProvider} from "@mui/material";
+import {appTheme} from "./appTheme";
+import {Courses, MyCourse} from "./pages";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const store = setupStore();
+
+root.render(
+    <Provider store={store}>
+        <ThemeProvider theme={appTheme}>
+            <BrowserRouter>
+                <Routes>
+                    <Route path={''} element={<App/>}>
+                        <Route index element={<Courses/>}/>
+                        <Route path={"course"} element={<MyCourse/>}/>
+                    </Route>
+                </Routes>
+            </BrowserRouter>
+        </ThemeProvider>
+    </Provider>
+);
